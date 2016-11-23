@@ -8,6 +8,7 @@ my $i;
 my $j;
 my @single;
 my @paired;
+my @part_all;
 my @paired_one;
 my @paired_two;
 my @single_one;
@@ -72,6 +73,7 @@ while(<LIST>)
 		{
 			$single[$i][$j]=0;
 			$paired[$i][$j]=0;
+			$part_all[$i][$j]=0;
 		}
 	}
 
@@ -93,6 +95,7 @@ while(<LIST>)
 					{
 						$single[$i][$j]=$single[$i][$j]+$single_one[$i][$j]+$single_two[$i][$j];
 						$paired[$i][$j]=$paired[$i][$j]+($paired_one[$i][$j]&$paired_two[$i][$j]);
+						$part_all[$i][$j]=$part_all[$i][$j]+($single_one[$i][$j]|$single_two[$i][$j]);
 					}
 				}
 			}
@@ -198,6 +201,7 @@ while(<LIST>)
 		{
 	        	$single[$i][$j]=$single[$i][$j]+$single_one[$i][$j]+$single_two[$i][$j];
 	                $paired[$i][$j]=$paired[$i][$j]+($paired_one[$i][$j]&$paired_two[$i][$j]);
+			$part_all[$i][$j]=$part_all[$i][$j]+($single_one[$i][$j]|$single_two[$i][$j]);
 		}
 	}
 
@@ -229,6 +233,20 @@ while(<LIST>)
 	        print OUT "\n";
 	}
 	print OUT "\n\n";
+
+	print OUT "$prefix\:Part\_all:\n";
+        print OUT "Ref\tTotal\(pair\)\tMatch>=50bp\tIden>=0.95\tIden>=0.9\tIden>=0.8\tIden>=0.7\tIden>=0.6\tIden>=0.5\tIden>0\n";
+        for($i=0;$i<$num;$i++)
+        {
+                print OUT "$name[$i]\t$total{$name[$i]}";
+                for($j=0;$j<8;$j++)
+                {
+                        $temp=$part_all[$i][$j]/$total{$name[$i]}*100;
+                        printf(OUT "\t%d\(%0.2f%%\)",$part_all[$i][$j],$temp);
+                }
+                print OUT "\n";
+        }
+        print OUT "\n\n";
 }
 close LIST;
 close OUT;
