@@ -266,7 +266,7 @@ for($i=0;$i<4;$i++)
 }
 
 open(OUT,">$ARGV[1]") or die "Can't create $ARGV[1]\n";
-print OUT "Iterms\t>=50bp\t>=95\%\t>=90\%\t>=80\%\t>=70\%\t>=60\%\t>=50\%\>0%\n";
+print OUT "Iterms\t>=50bp\t>=95\%\t>=90\%\t>=80\%\t>=70\%\t>=60\%\t>=50\%\t>0%\n";
 print OUT "Paired:average\n";
 for($i=0;$i<4;$i++)
 {
