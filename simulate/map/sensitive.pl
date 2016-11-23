@@ -6,8 +6,10 @@ my $i;
 my $j;
 my @average_paired;
 my @average_single;
+my @average_part;
 my @sd_paired;
 my @sd_single;
+my @sd_part;
 my $temp;
 my @max;
 my @total;
@@ -34,6 +36,8 @@ for($i=0;$i<8;$i++)
 		$sd_paired[$j][$i]=0;
 		$average_single[$j][$i]=0;
                 $sd_single[$j][$i]=0;
+		$average_part[$j][$i]=0;
+                $sd_part[$j][$i]=0;
 	}
 }
 
@@ -50,9 +54,13 @@ while(<IN>)
 			$flag=1;
 			$num++;
 		}
-		else
+		elsif($line=~/\:All/)
 		{
 			$flag=0;
+		}
+		else
+		{
+			$flag=2;
 		}
 		for($i=0;$i<8;$i++)
 		{
@@ -76,9 +84,13 @@ while(<IN>)
 			{
 				$average_paired[0][$i]+=$temp;
 			}
-			else
+			elsif($flag==0)
 			{
 				$average_single[0][$i]+=$temp;
+			}
+			else
+			{
+				$average_part[0][$i]+=$temp;
 			}
 		}
 		next;
@@ -93,10 +105,14 @@ while(<IN>)
                         {
                                 $average_paired[1][$i]+=$temp;
                         }
-                        else
+                        elsif($flag==0)
                         {
                                 $average_single[1][$i]+=$temp;
                         }
+			else
+			{
+				$average_part[1][$i]+=$temp;
+			}
                 }
                 next;
         }
@@ -125,16 +141,25 @@ while(<IN>)
 			$average_paired[3][$i]+=$max[$i];
 			$average_paired[2][$i]=$average_paired[2][$i]+$total[$i]/$total[8]*100;
 		}
-		$flag=2;
+		$flag=3;
 	}
 	elsif($flag==0)
 	{
 		for($i=0;$i<8;$i++)
                 {
                         $average_single[3][$i]+=$max[$i];
-                        $average_single[2][$i]=$average_paired[2][$i]+$total[$i]/$total[8]*100;
+                        $average_single[2][$i]=$average_single[2][$i]+$total[$i]/$total[8]*100;
                 }
-                $flag=2;
+                $flag=3;
+        }
+	elsif($flag==2)
+        {
+                for($i=0;$i<8;$i++)
+                {
+                        $average_part[3][$i]+=$max[$i];
+                        $average_part[2][$i]=$average_part[2][$i]+$total[$i]/$total[8]*100;
+                }
+                $flag=3;
         }
 	else
 	{
@@ -149,6 +174,7 @@ for($i=0;$i<4;$i++)
         {
                 $average_single[$i][$j]/=$num;
 		$average_paired[$i][$j]/=$num;
+		$average_part[$i][$j]/=$num;
 	}
 }
 
@@ -163,10 +189,14 @@ while(<IN>)
                 {
                         $flag=1;
                 }
-                else
+                elsif($line=~/\:All/)
                 {
                         $flag=0;
                 }
+		else
+		{
+			$flag=2;
+		}
                 for($i=0;$i<8;$i++)
                 {
                         $total[$i]=0;
@@ -189,10 +219,14 @@ while(<IN>)
                         {
                                 $sd_paired[0][$i]=$sd_paired[0][$i]+($temp-$average_paired[0][$i])**2;
                         }
-                        else
+                        elsif($flag==0)
                         {
                                 $sd_single[0][$i]=$sd_single[0][$i]+($temp-$average_single[0][$i])**2;
                         }
+			else
+			{
+				$sd_part[0][$i]=$sd_part[0][$i]+($temp-$average_part[0][$i])**2;
+			}
                 }
                 next;
         }
@@ -206,10 +240,14 @@ while(<IN>)
                         {
 				$sd_paired[1][$i]=$sd_paired[1][$i]+($temp-$average_paired[1][$i])**2;
                         }
-                        else
+                        elsif($flag==0)
                         {
 				$sd_single[1][$i]=$sd_single[1][$i]+($temp-$average_single[1][$i])**2;
                         }
+			else
+			{
+				$sd_part[1][$i]=$sd_part[1][$i]+($temp-$average_part[1][$i])**2;
+			}
                 }
                 next;
         }
@@ -238,7 +276,7 @@ while(<IN>)
                         $sd_paired[3][$i]=$sd_paired[3][$i]+($max[$i]-$average_paired[3][$i])**2;
                         $sd_paired[2][$i]=$sd_paired[2][$i]+($total[$i]/$total[8]*100-$average_paired[2][$i])**2;
                 }
-                $flag=2;
+                $flag=3;
         }
         elsif($flag==0)
         {
@@ -247,7 +285,16 @@ while(<IN>)
 			$sd_single[3][$i]=$sd_single[3][$i]+($max[$i]-$average_single[3][$i])**2;
                         $sd_single[2][$i]=$sd_single[2][$i]+($total[$i]/$total[8]*100-$average_single[2][$i])**2;
                 }
-                $flag=2;
+                $flag=3;
+        }
+	elsif($flag==2)
+        {
+                for($i=0;$i<8;$i++)
+                {
+                        $sd_part[3][$i]=$sd_part[3][$i]+($max[$i]-$average_part[3][$i])**2;
+                        $sd_part[2][$i]=$sd_part[2][$i]+($total[$i]/$total[8]*100-$average_part[2][$i])**2;
+                }
+                $flag=3;
         }
         else
         {
@@ -262,6 +309,7 @@ for($i=0;$i<4;$i++)
 	{
 		$sd_paired[$i][$j]=($sd_paired[$i][$j]/$num)**0.5;
 		$sd_single[$i][$j]=($sd_single[$i][$j]/$num)**0.5;
+		$sd_part[$i][$j]=($sd_part[$i][$j]/$num)**0.5;
 	}
 }
 
@@ -308,6 +356,29 @@ for($i=0;$i<4;$i++)
         for($j=0;$j<8;$j++)
         {
                 printf(OUT "\t%0.3f",$sd_single[$i][$j]);     
+        }
+        print OUT "\n";
+}
+
+print OUT "\n\n";
+print OUT "Part\_all:average\n";
+for($i=0;$i<4;$i++)
+{
+        print OUT $name[$i];
+        for($j=0;$j<8;$j++)
+        {
+                printf(OUT "\t%0.3f",$average_part[$i][$j]);
+        }
+        print OUT "\n";
+}
+
+print OUT "Part\_all\:sd\n";
+for($i=0;$i<4;$i++)
+{
+        print OUT $name[$i];
+        for($j=0;$j<8;$j++)
+        {
+                printf(OUT "\t%0.3f",$sd_part[$i][$j]);
         }
         print OUT "\n";
 }
