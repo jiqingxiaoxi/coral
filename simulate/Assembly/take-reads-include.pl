@@ -30,8 +30,8 @@ while(<LIST>)
 	$file[2]="/lustre/home/clslzy/bjia/simulate/".$prefix."_2.fa.gz";
 	if($ARGV[3]=~/\/$/)
 	{
-		$file[3]=$ARGV[3].$prefix."-include_1.fa";
-		$file[4]=$ARGV[3].$prefix."-include_2.fa";
+		$file[3]=$ARGV[3].$prefix."_1.fa";
+		$file[4]=$ARGV[3].$prefix."_2.fa";
 	}
 	else
 	{
