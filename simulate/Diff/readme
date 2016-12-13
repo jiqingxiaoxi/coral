@@ -1,0 +1,2 @@
+use DESeq2, edgeR and limma to find the diff expression genes
+the gene expression matrix from RSEM and Sailfish software
