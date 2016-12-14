@@ -145,7 +145,7 @@ for($i=0;$i<4;$i++)
 			@array=split("\t",$line);
 			if($array[$m] eq "NA")
 			{
-				$total[3]++;
+				$total[0]++;
 				next;
 			}
 			($gi)=$array[0]=~/gi\|(\d+)\|/;
@@ -168,7 +168,7 @@ for($i=0;$i<4;$i++)
 						$store[$k][3]++;
 					}
 				}
-				$total[0]++;
+				$total[1]++;
 			}
 			elsif(exists $down{$ref[$gi]})
 			{
@@ -187,7 +187,7 @@ for($i=0;$i<4;$i++)
                                                 $store[$k][2]++;
                                         }
                                 }
-                                $total[1]++;
+                                $total[2]++;
                         }
 			else
 			{
@@ -206,7 +206,7 @@ for($i=0;$i<4;$i++)
                                                 $store[$k][3]++;
                                         }
                                 }
-                                $total[2]++;
+                                $total[3]++;
                         }
 		}
 		close IN;
