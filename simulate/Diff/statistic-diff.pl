@@ -38,7 +38,7 @@ $diff[1]="edgeR";
 $diff[2]="limma";
 
 open(OUT,">$ARGV[3]") or die "Can't create $ARGV[3]\n";
-print OUT "Data\&handle\tNA_number\tUp_number\tDown_number\tStable_number\tA_0.1\tA_0.08\tA_0.05\tA_0.02\tA_0.01\tUs_0.1\tUs_0.08\tUs_0.05\tUs_0.02\tUs_0.01\tUp_0.1\tUp_0.08\tUp_0.05\tUp_0.02\tUp_0.01\tDs_0.1\tDs_0.08\tDs_0.05\tDs_0.02\tDs_0.01\tDp_0.1\tDp_0.08\tDp_0.05\tDp_0.02\tDp_0.01\n";
+print OUT "Data\&handle\tNA_number\tUp_number\tDown_number\tStable_number\tA_0.05\tA_0.02\tA_0.01\tA_0.005\tA_0.001\tUs_0.05\tUs_0.02\tUs_0.01\tUs_0.005\tUs_0.001\tUp_0.05\tUp_0.02\tUp_0.01\tUp_0.005\tUp_0.001\tDs_0.05\tDs_0.02\tDs_0.01\tDs_0.005\tDs_0.001\tDp_0.05\tDp_0.02\tDp_0.01\tDp_0.005\tDp_0.001\n";
 for($i=0;$i<4;$i++)
 {
 	$file[0]="/lustre/home/clslzy/bjia/test_pipeline/".$list[$i]."-source.txt";
@@ -226,7 +226,7 @@ for($i=0;$i<4;$i++)
 	##up genes sensitivity
 		for($k=0;$k<5;$k++)
 		{
-			$value=$store[$k][0]/$total[0]*100;
+			$value=$store[$k][0]/$total[1]*100;
 			printf(OUT "\t%0.2f%%",$value);
 		}
 	##up genes precision
@@ -245,10 +245,10 @@ for($i=0;$i<4;$i++)
 	##down genes sensitivity
                 for($k=0;$k<5;$k++)
                 {
-                        $value=$store[$k][2]/$total[1]*100;
+                        $value=$store[$k][2]/$total[2]*100;
                         printf(OUT "\t%0.2f%%",$value);
                 }
-        ##up genes precision
+        ##down genes precision
                 for($k=0;$k<5;$k++)
                 {
 			if($store[$k][2]+$store[$k][3]==0)
@@ -268,23 +268,23 @@ for($i=0;$i<4;$i++)
 sub find_pos
 {
 	my ($in)=@_;
-	if($in<0.01)
+	if($in<0.001)
 	{
 		return 4;
 	}
-	if($in<0.02)
+	if($in<0.005)
 	{
 		return 3;
 	}
-	if($in<0.05)
+	if($in<0.01)
 	{
 		return 2;
 	}
-	if($in<0.08)
+	if($in<0.02)
 	{
 		return 1;
 	}
-	if($in<0.1)
+	if($in<0.05)
 	{
 		return 0;
 	}
