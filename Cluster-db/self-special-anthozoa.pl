@@ -45,7 +45,7 @@ $threshold[7]=100;
 
 open(OUT,">$ARGV[1]") or die "Can't create $ARGV[1]\n";
 print OUT "Num_Match";
-for($j=1;$j<@db;$j++)
+for($j=0;$j<@db;$j++)
 {
 	print OUT "\t$db[$j]";
 }
