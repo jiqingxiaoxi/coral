@@ -105,7 +105,7 @@ open(OUT,">$ARGV[2]") or die "can't create $ARGV[2]\n";
 print OUT "Gene\tPvalue\tFC\tGO\tNamespace\tName\n";
 for($i=0;$i<$ARGV[1];$i++)
 {
-	printf(OUT "%s\t%0.5f\t%0.2f\t",$record[$i][0],$record[$i][1],$record[$i][2]);
+	printf(OUT "%s\t%0.9f\t%0.9f\t",$record[$i][0],$record[$i][1],$record[$i][2]);
 	if($hash{$record[$i][0]} eq "1")
 	{
 		print OUT "No GO\n";
